@@ -17,7 +17,10 @@ const auth = async (req, res, next) => {
         }
         const { id } = await getPayload(credential);
         const user = await models.User.findOne({
-            where: { id }
+            where: { id },
+            include: [
+                { model: models.Store }
+            ]
         });
         if (!user) {
             next({

@@ -39,7 +39,7 @@ class User extends Model {
     static associate(models) {
         const { Task, Store } = models;
         this.hasMany(Task);
-        this.hasMany(Store);
+        this.hasOne(Store);
     }
 }
 
