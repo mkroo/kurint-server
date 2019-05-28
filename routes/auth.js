@@ -34,7 +34,7 @@ router.post('/login', async (req, res, next) => {
                 message: 'Password does not match with user'
             });
         }
-        const accessToken = getToken({ id, role });
+        const accessToken = getToken({ id, name: user.name, role });
         res.json({ accessToken });
     } catch (err) {
         next(err);

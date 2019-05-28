@@ -42,15 +42,30 @@ router.post('/:userId/tasks', auth, async (req, res, next) => {
         const task = await models.Task.create(taskOptions);
         await task.setStore(store);
         await task.setUser(user);
+        res.status(204).json();
     } catch (err) {
         next(err);
     }
 });
 
 router.get('/:userId/tasks', async (req, res, next) => {
-    const { user } = req;
-    const tasks = await user.getTasks();
-    res.json({ tasks });
+    const { userId } = req.params;
+    try {
+        const user = await models.User.findOne({
+            where: { id: userId }
+        });
+        if (!user) {
+            throw {
+                status: 404,
+                code: 'NOT_FOUND',
+                message: 'User not found'
+            }
+        }
+        const tasks = await user.getTasks();
+        res.json({ tasks });
+    } catch (err) {
+        next(err);
+    }
 });
 
 router.post('/:')

@@ -1,6 +1,6 @@
 import { sign, verify } from 'jsonwebtoken';
 const secret = 'smk0107';
-const issuer = 'api.armyfriend.co.kr';
+const issuer = 'https://ansrl.com';
 
 const getToken = (payload) => {
     try {
