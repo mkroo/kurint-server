@@ -73,20 +73,10 @@ router.get('/:userId/tasks', async (req, res, next) => {
     }
 });
 
-router.post('/:userId/stores', async (req, res, next) => {
-    const { userId } = req.params;
+router.post('/:userId/stores', auth, async (req, res, next) => {
+    const { user } = req;
     const { name, location } = req.body;
     try {
-        const user = await models.User.fineOne({
-            where: { id: userId }
-        });
-        if (!user) {
-            throw {
-                status: 404,
-                code: 'NOT_FOUND',
-                message: 'User not found'
-            }
-        }
         const store = await models.Store.create({ name, location });
         await store.setUser(user);
         res.status(204).json();
