@@ -13,6 +13,14 @@ router.get('/', async (req, res, next) => {
     }
 })
 
+router.get('/:storeId', async (req, res, next) => {
+    const { storeId } = req.params;
+    const store = await models.Store.findOne({
+        where: { id: storeId }
+    });
+    res.json({ store });
+})
+
 router.get('/:storeId/tasks', async (req, res, next) => {
     const { storeId } = req.params;
     const store = await models.Store.findOne({

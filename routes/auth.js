@@ -6,7 +6,6 @@ const router = Router();
 
 router.post('/login', async (req, res, next) => {
     const { id, password } = req.body;
-    const { role } = req.query;
     try {
         const user = await models.User.findOne({
             where: { id }
@@ -15,14 +14,7 @@ router.post('/login', async (req, res, next) => {
             throw({
                 status: 404,
                 code: 'NOT_FOUND',
-                message: 'User not found'
-            });
-        }
-        if (role === 'store' && !user.storeId) {
-            throw({
-                status: 404,
-                code: 'NOT_FOUND',
-                message: 'Store not found'
+                message: '존재하지않는 아이디입니다.'
             });
         }
         const { hash, salt } = user;
@@ -31,10 +23,11 @@ router.post('/login', async (req, res, next) => {
             throw({
                 status: 401,
                 code: 'AUTHORIZATION_ERROR',
-                message: 'Password does not match with user'
+                message: '아이디와 비밀번호가 맞지않습니다.'
             });
         }
-        const accessToken = getToken({ id, name: user.name, role });
+        const store = await user.getStore()      
+        const accessToken = getToken({ id, name: user.name, store });
         res.json({ accessToken });
     } catch (err) {
         next(err);
@@ -48,7 +41,6 @@ router.post('/register', async (req, res, next) => {
         await models.User.create({ id, name, hash, salt, role });
         res.status(204).json();
     } catch (err) {
-        console.log(err);
         if (err.name = 'SequelizeValidationError') {
             const { path } = err.errors[0];
             if (path === 'id') {

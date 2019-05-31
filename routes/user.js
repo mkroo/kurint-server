@@ -24,8 +24,12 @@ router.delete('/:userId', async (req, res, next) => {
     }
 });
 
-router.get('/:userId', auth, async (req, res, next) => {
-    const { user } = req;
+router.get('/:userId', async (req, res, next) => {
+    const { userId } = req.params;
+    const user = await models.User.findOne({
+        attributes: ['id', 'name', 'cash'],
+        where: { id: userId }
+    });
     res.json({ user });
 });
 
