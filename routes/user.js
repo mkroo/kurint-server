@@ -33,8 +33,8 @@ router.post('/:userId/tasks', auth, async (req, res, next) => {
     const { user } = req;
     const { filePath, copies, isSingle, isColor, startPage, endPage, pagesPerSheet, size, storeId } = req.body;
     const taskOptions = { filePath, copies, isSingle, isColor, startPage, endPage, pagesPerSheet, size };
-    const price = calculatePrice(taskOptions);
     try {
+        const price = calculatePrice(taskOptions);
         if (user.cash - price < 0) {
             throw {
                 status: 400,
