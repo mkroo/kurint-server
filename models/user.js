@@ -5,11 +5,20 @@ class User extends Model {
         const { STRING, ENUM } = DataTypes;
         return super.init({
             name: {
-                type: STRING
+                type: STRING,
+                validate: {
+                    notEmpty: true,
+                    len: [2]
+                }
             },
             id: {
                 type: STRING,
                 primaryKey: true,
+                validate: {
+                    notEmpty: true,
+                    len: [4, 12],
+                    isAlphanumeric: true
+                }
             },
             salt: {
                 type: STRING

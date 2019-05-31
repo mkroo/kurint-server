@@ -48,6 +48,15 @@ router.post('/register', async (req, res, next) => {
         await models.User.create({ id, name, hash, salt, role });
         res.status(204).json();
     } catch (err) {
+        console.log(err);
+        if (err.name = 'SequelizeValidationError') {
+            const { path } = err.errors[0];
+            if (path === 'id') {
+                err = { status: 400, message: `ID는 4~12자 사이이며, 한글, 특수문자, 공백은 허용되지 않습니다.`}
+            } else if (path === 'name') {
+                err = { status: 400, message: `이름은 2글자 이상이며, 특수문자, 공백은 허용되지 않습니다.`}
+            }
+        }
         next(err);
     }
 });
