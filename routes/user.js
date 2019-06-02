@@ -44,9 +44,9 @@ router.post('/:userId/tasks', auth, async (req, res, next) => {
                 status: 400,
                 message: '잔액이 부족합니다.'
             }
-        }
+        }        
         await user.update({ cash: user.cash - price });
-        const store = await models.Store.findOne({ storeId });
+        const store = await models.Store.findOne({ where: { id: storeId } });
         await store.update({ cash: store.cash + price });
         const task = await models.Task.create(taskOptions);
         await task.setStore(store);
@@ -70,7 +70,7 @@ router.get('/:userId/tasks', async (req, res, next) => {
                 message: 'User not found'
             }
         }
-        const tasks = await user.getTasks();
+        const tasks = await user.getTasks({ paranoid: false });
         res.json({ tasks });
     } catch (err) {
         next(err);
@@ -87,8 +87,18 @@ router.post('/:userId/stores', auth, async (req, res, next) => {
     } catch (err) {
         next(err);
     }
-})
+});
 
-router.post('/:')
+router.post('/:userId/feedbacks', auth, async (req, res, next) => {
+    const { user } = req;
+    const { content } = req.body;
+    try {
+        const feedback = await models.Feedback.create({ content });
+        await feedback.setUser(user);
+        res.status(204).json();
+    } catch (err) {
+        next(err);
+    }
+});
 
 export default router;

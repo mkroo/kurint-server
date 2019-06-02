@@ -39,7 +39,8 @@ class Task extends Model {
             }
         }, {
             sequelize,
-            modelName: 'task'
+            modelName: 'task',
+            paranoid: true
         });
     }
     static associate(models) {

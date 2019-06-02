@@ -4,13 +4,15 @@ import config from '../config/database.json';
 import StoreModel from './store';
 import TaskModel from './task';
 import UserModel from './user'
+import FeedbackModel from './feedback';
 
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
 const models = {
     Store: StoreModel.init(sequelize),
     Task: TaskModel.init(sequelize),
-    User: UserModel.init(sequelize)
+    User: UserModel.init(sequelize),
+    Feedback: FeedbackModel.init(sequelize)
 }
 
 Object.values(models)

@@ -5,7 +5,7 @@ const router = Router();
 router.delete('/:taskId', async (req, res, next) => {
     const { taskId } = req.params;
     await models.Task.destroy({
-        id: taskId
+        where: { id: taskId }
     });
     res.status(204).json();
 });
