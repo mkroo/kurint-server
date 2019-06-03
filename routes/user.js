@@ -83,6 +83,10 @@ router.post('/:userId/stores', auth, async (req, res, next) => {
     try {
         const store = await models.Store.create({ name, location });
         await store.setUser(user);
+        const hour = new Date().getHours();
+        if (hour < 11 || hour >= 19) {
+            throw { status: 400, message: '오전 11시 에서 오후 7시 까지만 요청이 가능합니다.'}
+        }
         res.status(204).json();
     } catch (err) {
         next(err);
