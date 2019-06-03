@@ -38,7 +38,9 @@ router.post('/register', async (req, res, next) => {
     const { id, name, password, role } = req.body;
     try {
         const { hash, salt } = await createHash(password);
-        await models.User.create({ id, name, hash, salt, role });
+        const users = await models.User.findAll();
+        const cash = users.length<=100?1000:0;
+        await models.User.create({ id, name, hash, salt, role, cash });
         res.status(204).json();
     } catch (err) {
         if (err.name = 'SequelizeValidationError') {
