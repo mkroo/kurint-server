@@ -38,7 +38,7 @@ router.post('/:userId/tasks', auth, async (req, res, next) => {
     const { filePath, copies, isSingle, isColor, startPage, endPage, pagesPerSheet, size, storeId } = req.body;
     const taskOptions = { filePath, copies, isSingle, isColor, startPage, endPage, pagesPerSheet, size };
     try {
-        const hour = new Date().getHours();
+        const hour = new Date().getUTCHours()+9
         if (hour < 11 || hour >= 19) {
             throw { status: 400, message: '오전 11시 에서 오후 7시 까지만 요청이 가능합니다.'}
         }
