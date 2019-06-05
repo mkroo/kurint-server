@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import models from '../models';
 import calculatePrice from '../utils/calculatePrice';
+import auth from '../middlewares/authorization';
 const router = Router();
 
 router.delete('/:taskId', async (req, res, next) => {

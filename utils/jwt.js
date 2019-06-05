@@ -4,7 +4,7 @@ const issuer = 'https://ansrl.com';
 
 const getToken = (payload) => {
     try {
-        return sign(payload, secret, { expiresIn: '12h', issuer });
+        return sign(payload, secret, { issuer });
     } catch (err) {
         throw {
             status: 400,
