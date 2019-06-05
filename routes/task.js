@@ -4,14 +4,6 @@ import calculatePrice from '../utils/calculatePrice';
 import auth from '../middlewares/authorization';
 const router = Router();
 
-router.delete('/:taskId', async (req, res, next) => {
-    const { taskId } = req.params;
-    await models.Task.destroy({
-        where: { id: taskId }
-    });
-    res.status(204).json();
-});
-
 router.patch('/:taskId', auth, async (req, res, next) => {
     const { user } = req;
     const { store } = user;

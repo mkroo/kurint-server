@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import models from '../models';
-import { Op } from 'sequelize';
 const router = Router();
 
 router.get('/', async (req, res, next) => {
@@ -24,7 +23,7 @@ router.get('/:storeId', async (req, res, next) => {
 
 router.get('/:storeId/tasks', async (req, res, next) => {
     const { storeId } = req.params;
-    const { complete } = req.query;
+    const { status } = req.query;
     const store = await models.Store.findOne({
         where: { id: storeId }
     });
@@ -32,10 +31,7 @@ router.get('/:storeId/tasks', async (req, res, next) => {
         include: [
             { model: models.User, attributes: ['id', 'name'] }
         ],
-        paranoid: false,
-        where: {
-            deletedAt: complete?{ [Op.ne]: null }:null
-        }
+        where: { status }
     });
     res.json({ tasks });
 });

@@ -51,7 +51,6 @@ router.post('/:userId/tasks', auth, async (req, res, next) => {
         }        
         await user.update({ cash: user.cash - price });
         const store = await models.Store.findOne({ where: { id: storeId } });
-        await store.update({ cash: store.cash + price });
         const task = await models.Task.create(taskOptions);
         await task.setStore(store);
         await task.setUser(user);
@@ -74,7 +73,7 @@ router.get('/:userId/tasks', async (req, res, next) => {
                 message: 'User not found'
             }
         }
-        const tasks = await user.getTasks({ paranoid: false });
+        const tasks = await user.getTasks();
         res.json({ tasks });
     } catch (err) {
         next(err);
