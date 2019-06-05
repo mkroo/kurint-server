@@ -58,6 +58,4 @@ router.patch('/:storeId/prices', async (req, res, next) => {
     }
 });
 
-
-
 export default router;

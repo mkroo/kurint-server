@@ -36,11 +36,15 @@ class Task extends Model {
                 type: ENUM,
                 values: ['A3', 'A4', 'B5'],
                 allowNull: false
+            },
+            status: {
+                type: ENUM,
+                values: ['fetching', 'complete', 'cancel', 'reject'],
+                defaultValue: 'fetching'
             }
         }, {
             sequelize,
-            modelName: 'task',
-            paranoid: true
+            modelName: 'task'
         });
     }
     static associate(models) {
